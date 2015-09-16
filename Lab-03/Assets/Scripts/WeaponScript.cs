@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// @author Mike Dobson
+/// </summary>
+
 public enum Classification
 {
     TWOHANDED,
@@ -18,7 +22,7 @@ public enum WeaponType
 }
 
 [System.Serializable]
-public class WeaponScript : MonoBehaviour
+public class WeaponScript
 {
     public Classification classification;
     public WeaponType weaponType;
@@ -26,4 +30,5 @@ public class WeaponScript : MonoBehaviour
     public bool upgradeable;
 
     public float damage;
+
 }

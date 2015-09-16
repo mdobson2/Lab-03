@@ -5,9 +5,11 @@ using System.Collections;
 /// @author Mike Dobson
 /// </summary>
 
-[System.Serializable]
-public class ObjectController : MonoBehaviour
-{
 
-    public ObjectTypes[] controllerObjects;
+[System.Serializable]
+public class ObjectContainer : MonoBehaviour {
+
+    public EnemyType[] enemies;
+
+    public WeaponScript[] weapons;
 }

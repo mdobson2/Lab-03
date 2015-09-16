@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// @author Mike Dobson
+/// </summary>
+
 public enum ObjectType
 {
     BREAKABLE,

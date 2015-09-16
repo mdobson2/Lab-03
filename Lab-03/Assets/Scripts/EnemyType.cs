@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// @author Mike Dobson
+/// </summary>
+
+
 public enum AttackDamage
 {
     PHYSICAL,
@@ -9,6 +14,7 @@ public enum AttackDamage
 
 public enum SpellTypes
 {
+    NONE,
     FIRE,
     FROST,
     ARCANE
@@ -17,7 +23,7 @@ public enum SpellTypes
 
 
 [System.Serializable]
-public class EnemyType :MonoBehaviour {
+public class EnemyType {
 
     public string name;
 

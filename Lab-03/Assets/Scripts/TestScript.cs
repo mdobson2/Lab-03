@@ -1,31 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// @author Mike Dobson
+/// </summary>
+
 public class TestScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        EnemyType enemyScript = Camera.main.GetComponent<EnemyType>();
-        WeaponScript weaponScript = Camera.main.GetComponent<WeaponScript>();
 
-        Debug.Log("classification " + weaponScript.classification);
-        Debug.Log("weapon type " + weaponScript.weaponType);
-        Debug.Log("upgradeable " + weaponScript.upgradeable);
-        Debug.Log("damage " + weaponScript.damage);
+        ObjectContainer container = Camera.main.GetComponent<ObjectContainer>();
 
-        Debug.Log("-");
+        foreach (WeaponScript weapon in container.weapons)
+        {
+            Debug.Log("classification " + weapon.classification);
+            Debug.Log("weapon type " + weapon.weaponType);
+            Debug.Log("upgradeable " + weapon.upgradeable);
+            Debug.Log("damage " + weapon.damage);
+            Debug.Log("---------------");
+        }
 
-        Debug.Log("name " + enemyScript.name);
-        Debug.Log("damage type " + enemyScript.attackDamage);
-        Debug.Log("spell type " + enemyScript.spellType);
-        Debug.Log("cloth " + enemyScript.clothArmor);
-        Debug.Log("leather " + enemyScript.leatherArmor);
-        Debug.Log("mail " + enemyScript.mailArmor);
-        Debug.Log("plate " + enemyScript.plateArmor);
-        Debug.Log("two handed " + enemyScript.twoHanded);
-        Debug.Log("dual wield " + enemyScript.dualWield);
-        Debug.Log("health " + enemyScript.Health);
-        Debug.Log("mana " + enemyScript.Mana);
+        Debug.Log("=================");
+        foreach (EnemyType enemy in container.enemies)
+        {
+            Debug.Log("name " + enemy.name);
+            Debug.Log("damage type " + enemy.attackDamage);
+            Debug.Log("spell type " + enemy.spellType);
+            Debug.Log("cloth " + enemy.clothArmor);
+            Debug.Log("leather " + enemy.leatherArmor);
+            Debug.Log("mail " + enemy.mailArmor);
+            Debug.Log("plate " + enemy.plateArmor);
+            Debug.Log("two handed " + enemy.twoHanded);
+            Debug.Log("dual wield " + enemy.dualWield);
+            Debug.Log("health " + enemy.Health);
+            Debug.Log("mana " + enemy.Mana);
+            Debug.Log("---------------");
+        }
 	
 	}
 	

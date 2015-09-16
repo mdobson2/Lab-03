@@ -2,95 +2,117 @@
 using System.Collections;
 using UnityEditor;
 
+/// <summary>
+/// @author Mike Dobson
+/// </summary>
 
-[CustomEditor(typeof(WeaponScript))]
-public class WeaponEditor : Editor
+[CustomPropertyDrawer(typeof(WeaponScript))]
+public class WeaponEditor : PropertyDrawer
 {
+    WeaponScript thisObject;
+
+    float extraHeight = 40f;
 
     WeaponScript weaponScript;
-    bool weaponClass = false;
-    bool weaponSettings = false;
-    int Index;
-    string[] options;
 
-    void Awake()
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        weaponScript = (WeaponScript)target;
-    }
+        Rect weaponDisplay = new Rect(position.x, position.y, position.width, 15f);
+        int Index = 0;
+        EditorGUI.BeginProperty(position, label, property);
+        //--------------------------------------
 
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
-        //-------------------------
+        SerializedProperty classification = property.FindPropertyRelative("classification");
+        SerializedProperty weaponType = property.FindPropertyRelative("weaponType");
 
-        SerializedProperty classification = serializedObject.FindProperty("classification");
-        SerializedProperty weaponType = serializedObject.FindProperty("weaponType");
+        SerializedProperty upgradeable = property.FindPropertyRelative("upgradeable");
+        SerializedProperty damage = property.FindPropertyRelative("damage");
 
-        SerializedProperty upgradeable = serializedObject.FindProperty("upgradeable");
-        SerializedProperty damage = serializedObject.FindProperty("damage");
+        string[] options = new string[] { null };
 
-        weaponClass = EditorGUILayout.Foldout(weaponClass, "Weapon Classification");
-        if(weaponClass)
+        float offset = position.x;
+
+        Rect weaponClassDisplay = new Rect(offset, position.y + 17f, position.width / 2, 15f);
+        offset += position.width / 2;
+        EditorGUI.PropertyField(weaponClassDisplay, classification, GUIContent.none);
+
+        switch(classification.enumValueIndex)
         {
-            EditorGUILayout.PropertyField(classification);
-            if(classification.enumValueIndex == (int)Classification.TWOHANDED)
-            {
+            case (int)Classification.TWOHANDED:
                 options = new string[]{"Sword", "Hammer", "Scyth"};
-                EditorGUILayout.Popup("Weapon Type", Index, options);
-                if(Index == 0)
-                {
-                    weaponType.enumValueIndex = 0;
-                }
-                if(Index == 1)
-                {
-                    weaponType.enumValueIndex = 3;
-                }
-                if(Index == 2)
-                {
-                    weaponType.enumValueIndex = 4;
-                }
-            }
-            if(classification.enumValueIndex == (int)Classification.ONEHANDED)
-            {
+                break;
+            case (int)Classification.ONEHANDED:
                 options = new string[] { "Sword", "Hammer" };
-                EditorGUILayout.Popup("Weapon Type", Index, options);
-
-                if (Index == 0)
-                {
-                    weaponType.enumValueIndex = 0;
-                }
-                if (Index == 1)
-                {
-                    weaponType.enumValueIndex = 3;
-                }                
-            }
-            if(classification.enumValueIndex ==(int)Classification.OFFHAND)
-            {
+                break;
+            case (int)Classification.OFFHAND:
                 options = new string[] { "Shield", "Relic" };
-                EditorGUILayout.Popup("Weapon Type", Index, options);
-                if (Index == 0)
+                break;
+        }
+
+        Rect weaponTypeDisplay = new Rect(offset, position.y + 17f, position.width / 2, 15f);
+        offset = position.x;
+        EditorGUI.Popup(weaponTypeDisplay, Index, options);
+
+        switch(classification.enumValueIndex)
+        {
+            case (int)Classification.TWOHANDED:
+                switch(Index)
                 {
-                    weaponType.enumValueIndex = 1;
+                    case 0:
+                        weaponType.enumValueIndex = 0;
+                        break;
+                    case 1:
+                        weaponType.enumValueIndex = 3;
+                        break;
+                    case 2:
+                        weaponType.enumValueIndex = 4;
+                        break;
                 }
-                if (Index == 1)
+                break;
+            case (int)Classification.ONEHANDED:
+                switch(Index)
                 {
-                    weaponType.enumValueIndex = 2;
-                }                
-            }
+                    case 0:
+                        weaponType.enumValueIndex = 0;
+                        break;
+                    case 1:
+                        weaponType.enumValueIndex = 3;
+                        break;                    
+                }
+                break;
+            case (int)Classification.OFFHAND:
+                switch(Index)
+                {
+                    case 0:
+                        weaponType.enumValueIndex = 1;
+                        break;
+                    case 1:
+                        weaponType.enumValueIndex = 2;
+                        break;
+                }
+                break;
         }
 
-        weaponSettings = EditorGUILayout.Foldout(weaponSettings, "Weapon Settings");
-        if (weaponSettings)
-        {            
-            EditorGUILayout.PropertyField(damage);
+        Rect damageDisplay = new Rect(offset, position.y + 35f, position.width / 2, 15f);
+        offset += position.width / 2;
+        EditorGUI.PropertyField(damageDisplay, damage);
 
-            if (weaponType.enumValueIndex != (int)WeaponType.HAMMER)
-            {
-                EditorGUILayout.PropertyField(upgradeable);
-            }
+        if (weaponType.enumValueIndex != (int)WeaponType.HAMMER)
+        {
+            Rect upgradeableDisplay = new Rect(offset, position.y + 35f, position.width / 2, 15f);
+            EditorGUI.PropertyField(upgradeableDisplay, upgradeable);
+        }
+        else
+        {
+            upgradeable.boolValue = false;
         }
 
-        //=========================
-        serializedObject.ApplyModifiedProperties();
+        //======================================
+        EditorGUI.EndProperty();
     }
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        return base.GetPropertyHeight(property, label) + extraHeight;
+    }       
 }
